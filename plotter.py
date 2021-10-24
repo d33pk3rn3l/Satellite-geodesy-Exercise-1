@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import geopandas
+#import geopandas
 
 
 # 3D Plot
@@ -14,16 +14,19 @@ def plot3Dtrajectory(name, desc, x, y, z):
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
     ax.set_zlabel('Z')
+    ax.set_xlim3d(-33000,33000)
+    ax.set_ylim3d(-33000,33000)
+    ax.set_zlim3d(-33000,33000)
     #ax.legend()
     #plt.tight_layout()
     plt.savefig("Export/" + name + "_" + desc + '.png')
 
 def plotGroundTrack(name, desc, lat, long, min, max):
-    countries = geopandas.read_file(geopandas.datasets.get_path("naturalearth_lowres"))
+    #countries = geopandas.read_file(geopandas.datasets.get_path("naturalearth_lowres"))
     fig = plt.figure(figsize = (10,5))
     ##ax = fig.add_suplot(111)
 
-    countries.plot(color = "grey")
+    #countries.plot(color = "grey")
     plt.scatter(long, lat, color = "purple", linewidths = 0.5)
     plt.grid()
     plt.ylim(-90,90)
@@ -40,8 +43,8 @@ def polarPlot(name, desc, az, el):
 
     ax.set_theta_zero_location("N")
     ax.set_theta_direction(-1)
-    ax.set_rmax(90)
-    plt.ylim(0,90)
+    #ax.set_rmax(90)
+    #plt.ylim(0,90)
     plt.title(name + " " + desc)
     #ax.set_yticks(5)
     #ax.tick_params(axis='both', labelsize=15)

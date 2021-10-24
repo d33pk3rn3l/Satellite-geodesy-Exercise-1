@@ -43,8 +43,8 @@ def polarPlot(name, desc, az, el):
 
     ax.set_theta_zero_location("N")
     ax.set_theta_direction(-1)
-    ax.set_rmax(90)
-    plt.ylim(0,90)
+    #ax.set_rmax(90)
+    #plt.ylim(0,90)
     plt.title(name + " " + desc)
     #ax.set_yticks(5)
     #ax.tick_params(axis='both', labelsize=15)

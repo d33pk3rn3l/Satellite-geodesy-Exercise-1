@@ -72,24 +72,33 @@ def intertialToTopo(coordinates, satellite):
     zW = constants.R * math.sin(constants.WETTZELL["latitude"])
 
     p0 = numpy.matrix([xW, yW, zW])
+    print(constants.WETTZELL["latitude"], constants.WETTZELL["longitude"], xW, yW, zW, p0)
 
-    r2 = transformations.rotationmatrices.ry((math.pi / 2) - constants.WETTZELL["latitude"])
-    r3 = transformations.rotationmatrices.rz(constants.WETTZELL["longitude"])
-    mirror = numpy.matrix([[-1, 0, 0], [0, 1, 0], [0, 0, 1]])
+    r2 = transformations.rotationmatrices.ry((math.pi / 2) + constants.WETTZELL["latitude"])
+    r3 = transformations.rotationmatrices.rz(-constants.WETTZELL["longitude"])
+
+    r2test = transformations.rotationmatrices.ry(math.pi / 2 - math.pi / 4)
+    r3test = transformations.rotationmatrices.rz(math.pi / 2)
+
+    mirror = numpy.matrix([[1, 0, 0], [0, 1, 0], [0, 0, -1]])
     #print(p0)
     #newCoords = numpy.empty((0,3))
 
     for coordinate in coordinates:
         
         c1 = transformations.inertialToEarthfixed(coordinate, t)
-        
-        c2 = transpose(numpy.linalg.multi_dot([mirror, r2, r3, transpose(c1 - p0)]))
+        a = c1 - p0
+        d = (c1 - p0).transpose()
+        #c2 = transpose(numpy.linalg.multi_dot([mirror, r2, r3, transpose(c1 - p0)]))
+        c2 = mirror @ r2 @ r3 @ d
+        #c2.transpose()
 
         n.append(c2[0,0])
-        e.append(c2[0,1])
-        u.append(c2[0,2])
+        e.append(c2[1,0])
+        u.append(c2[2,0])
 
         if satellite == "Lageos1": t += 120
+        elif satellite == "TEST": t += 2400
         else: t += 300
     return n, e, u
 
@@ -124,21 +133,27 @@ def task4(satellites):
         az = []
         el = []
         
+        #n = n0.to_list()
+        #e = e0.to_list()
+        #u = u0.to_list()
+
         for (ni, ei, ui) in itertools.zip_longest(n, e, u):
             elevation = 0
             azimuth = 0
-            
-            if x > 0 and y >= 0: #1st quadrant
-                elevation = math.pi / 2 - math.atan(math.sqrt(ni**2 + ei**2) / ui) * 180 / math.pi
-                azimuth = math.atan(ei / ni) * 180 / math.pi
-            elif x < 0: #2nd / third quadrant
-                elevation = math.pi / 2 - (math.atan(math.sqrt(ni**2 + ei**2) + math.pi) / ui) * 180 / math.pi
-                azimuth = (math.atan(ei / ni) + math.pi) * 180 / math.pi
+            if ui < 0: # below horizon
+                continue 
+
+            if ei < 0 and ni > 0: #1st quadrant
+                azimuth = (-math.atan(ei / ni) * 180 / math.pi)
+            elif ni < 0: #2nd / 3rd quadrant
+                azimuth = ((-math.atan(ei / ni) + math.pi) * 180 / math.pi)
             else: #4th quadrant
-                azimuth = math.pi / 2 - (math.atan(math.sqrt(ni**2 + ei**2) + 2 * math.pi) / ui) * 180 / math.pi
-                elevation = (math.atan(ei / ni) + 2 * math.pi)* 180 / math.pi
-            
+                azimuth = ((-math.atan(ei / ni) + 2 * math.pi) * 180 / math.pi)
+
+            elevation = (math.atan(math.sqrt((ni ** 2) + (ei ** 2)) / ui)) * 180 / math.pi
+
             el.append(elevation)
-            az.append(azimuth)
+            az.append(azimuth * math.pi / 180)
+            print(ni, ei, ui, elevation, azimuth)
              
         plotter.polarPlot(satellite, "Topozentrisch 24h von Wetzell", az, el)

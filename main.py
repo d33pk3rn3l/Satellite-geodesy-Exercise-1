@@ -17,7 +17,7 @@ satellites = {"GPS07": GPS07, "GLONASS07": GLONASS07, "GALILEO07": GALILEO07, "Q
 #satellites = {"Lageos1": Lageos1}
 #satellites = {"TEST": TEST}
 
-#tasks.task1(satellites)
-#tasks.task2(satellites)
-#tasks.task3(satellites)
+tasks.task1(satellites)
+tasks.task2(satellites)
+tasks.task3(satellites)
 tasks.task4(satellites)

@@ -93,7 +93,7 @@ def intertialToTopo(coordinates, satellite):
         c2 = mirror @ r2 @ r3 @ d
         #c2.transpose()
 
-        n.append(c2[0,0])
+        n.append(-c2[0,0])
         e.append(c2[1,0])
         u.append(c2[2,0] - constants.WETTZELL["h"] / 1000) #up is h (meters) / 1000 of Wettzell smaller (Wettzell is "closer" to satellite)
 

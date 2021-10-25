@@ -95,7 +95,7 @@ def intertialToTopo(coordinates, satellite):
 
         n.append(c2[0,0])
         e.append(c2[1,0])
-        u.append(c2[2,0] - constants.WETTZELL["h"]) #up is h of Wettzell smaller (Wettzell is "closer" to satellite)
+        u.append(c2[2,0] - constants.WETTZELL["h"] / 1000) #up is h (meters) / 1000 of Wettzell smaller (Wettzell is "closer" to satellite)
 
         if satellite == "Lageos1": t += 120
         elif satellite == "TEST": t += 2400

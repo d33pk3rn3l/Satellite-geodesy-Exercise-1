@@ -14,8 +14,6 @@ Lageos1     = np.loadtxt('Data/PL52asc.sec')
 TEST        = np.loadtxt('Data/TEST.sec')
 
 satellites = {"GPS07": GPS07, "GLONASS07": GLONASS07, "GALILEO07": GALILEO07, "QZSS03": QZSS03, "Beidou07": Beidou07, "Lageos1": Lageos1}
-#satellites = {"Lageos1": Lageos1}
-#satellites = {"TEST": TEST}
 
 tasks.task1(satellites)
 tasks.task2(satellites)

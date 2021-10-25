@@ -1,6 +1,5 @@
 import constants
 import rotationmatrices
-import numpy
 
 def earthRotation(coordinates, theta):
     r = rotationmatrices.rz(theta)

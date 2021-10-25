@@ -10,30 +10,28 @@ def plot3Dtrajectory(name, desc, x, y, z):
     ax.plot(x, y, z, color = 'purple', label = 'GPS', marker = '')
 
     plt.title(name + " " + desc)
-    #ax.view_init(20,45)
+
     ax.set_xlabel('|X] = km')
     ax.set_ylabel('[Y] = km')
     ax.set_zlabel('[Z] = km')
     ax.set_xlim3d(-33000,33000)
     ax.set_ylim3d(-33000,33000)
     ax.set_zlim3d(-33000,33000)
-    #ax.legend()
-    #plt.tight_layout()
+
     plt.savefig("Export/" + name + "_" + desc + '.png')
 
 def plotGroundTrack(name, desc, lat, long, min, max):
     countries = geopandas.read_file(geopandas.datasets.get_path("naturalearth_lowres"))
-    fig = plt.figure(figsize = (12,6))
-    #ax = fig.add_suplot(111)
 
     countries.plot(color = "grey")
     plt.scatter(long, lat, color = "purple")
-    #ax.set_xlabel("Längengrad")
+
     plt.grid()
     plt.ylim(-90,90)
     plt.xlim(-180,180)
     plt.title(name + " " + desc)
     plt.figtext(0.5, 0.15, "Minimale Breite: " + str(min) + "° / maximale Breite: " + str(max) + "°", ha = "center", fontsize = 9, style = "italic")
+
     plt.savefig("Export/" + name + "_" + desc + '.png')
 
 def polarPlot(name, desc, az, el):
@@ -47,4 +45,5 @@ def polarPlot(name, desc, az, el):
     plt.figtext(0.54, 0.5, "Elevation", rotation=62.5)
     plt.ylim(90,0)
     plt.title(name + " " + desc)
+    
     plt.savefig("Export/" + name + "_" + desc + '.png')

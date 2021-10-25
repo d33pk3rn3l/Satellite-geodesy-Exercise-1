@@ -35,7 +35,6 @@ def inertialToEarthFixed(coordinates, satellite):
 
         if satellite == "Lageos1": t += 120
         else: t += 300
-    #print(satellite, t)
     return x, y, z
 
 def toLatLong(coordinates, satellite):
@@ -72,30 +71,23 @@ def intertialToTopo(coordinates, satellite):
     zW = constants.R * math.sin(constants.WETTZELL["latitude"])
 
     p0 = numpy.matrix([xW, yW, zW])
-    print(constants.WETTZELL["latitude"], constants.WETTZELL["longitude"], xW, yW, zW, p0)
 
     r2 = transformations.rotationmatrices.ry((math.pi / 2) + constants.WETTZELL["latitude"])
     r3 = transformations.rotationmatrices.rz(-constants.WETTZELL["longitude"])
 
-    r2test = transformations.rotationmatrices.ry(math.pi / 2 - math.pi / 4)
-    r3test = transformations.rotationmatrices.rz(math.pi / 2)
-
     mirror = numpy.matrix([[1, 0, 0], [0, 1, 0], [0, 0, -1]])
-    #print(p0)
-    #newCoords = numpy.empty((0,3))
 
     for coordinate in coordinates:
         
         c1 = transformations.inertialToEarthfixed(coordinate, t)
         a = c1 - p0
         d = (c1 - p0).transpose()
-        #c2 = transpose(numpy.linalg.multi_dot([mirror, r2, r3, transpose(c1 - p0)]))
-        c2 = mirror @ r2 @ r3 @ d
-        #c2.transpose()
 
-        n.append(-c2[0,0])
+        c2 = mirror @ r2 @ r3 @ d
+
+        n.append(-c2[0,0]) #flip N
         e.append(c2[1,0])
-        u.append(c2[2,0] - constants.WETTZELL["h"] / 1000) #up is h (meters) / 1000 of Wettzell smaller (Wettzell is "closer" to satellite)
+        u.append(c2[2,0] - constants.WETTZELL["h"] / 1000) #U is h (meters) / 1000 of Wettzell smaller (Wettzell is "closer" to satellite)
 
         if satellite == "Lageos1": t += 120
         elif satellite == "TEST": t += 2400
@@ -128,21 +120,15 @@ def task3(satellites):
 def task4(satellites):
     for satellite in satellites:
         n, e, u = intertialToTopo(satellites[satellite], satellite)
-        #print(satellite, coordinates)
-        
+
         az = []
         el = []
-        
-        #n = n0.to_list()
-        #e = e0.to_list()
-        #u = u0.to_list()
 
         for (ni, ei, ui) in itertools.zip_longest(n, e, u):
             elevation = 0
             azimuth = 0
             if ui < 0: # below horizon
                 continue 
-
             if ei < 0 and ni > 0: #1st quadrant
                 azimuth = (-math.atan(ei / ni) * 180 / math.pi)
             elif ni < 0: #2nd / 3rd quadrant
@@ -153,7 +139,6 @@ def task4(satellites):
             elevation = (math.pi / 2 - math.atan(math.sqrt((ni ** 2) + (ei ** 2)) / ui)) * 180 / math.pi
 
             el.append(elevation)
-            az.append(azimuth * math.pi / 180)
-            print(ni, ei, ui, elevation, azimuth)
+            az.append(azimuth * math.pi / 180) #Need it in Rad
              
         plotter.polarPlot(satellite, "Topozentrisch 24h von Wetzell", az, el)

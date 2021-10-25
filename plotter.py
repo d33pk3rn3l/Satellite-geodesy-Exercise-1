@@ -4,7 +4,7 @@ import geopandas
 
 # 3D Plot
 def plot3Dtrajectory(name, desc, x, y, z):
-    fig = plt.figure(figsize=(12,12))
+    fig = plt.figure(figsize=(6,6))
     ax = fig.add_subplot(111, projection = '3d')
 
     ax.plot(x, y, z, color = 'purple', label = 'GPS', marker = '')

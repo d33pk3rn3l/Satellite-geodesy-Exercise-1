@@ -150,7 +150,7 @@ def task4(satellites):
             else: #4th quadrant
                 azimuth = ((-math.atan(ei / ni) + 2 * math.pi) * 180 / math.pi)
 
-            elevation = (math.atan(math.sqrt((ni ** 2) + (ei ** 2)) / ui)) * 180 / math.pi
+            elevation = (math.pi / 2 - math.atan(math.sqrt((ni ** 2) + (ei ** 2)) / ui)) * 180 / math.pi
 
             el.append(elevation)
             az.append(azimuth * math.pi / 180)

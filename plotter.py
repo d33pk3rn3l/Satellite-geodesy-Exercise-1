@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-#import geopandas
+import geopandas
 
 
 # 3D Plot
@@ -21,9 +21,9 @@ def plot3Dtrajectory(name, desc, x, y, z):
     plt.savefig("Export/" + name + "_" + desc + '.png')
 
 def plotGroundTrack(name, desc, lat, long, min, max):
-    #countries = geopandas.read_file(geopandas.datasets.get_path("naturalearth_lowres"))
+    countries = geopandas.read_file(geopandas.datasets.get_path("naturalearth_lowres"))
 
-    #countries.plot(color = "grey")
+    countries.plot(color = "grey")
     plt.scatter(long, lat, color = "purple")
 
     plt.grid()

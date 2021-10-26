@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-import geopandas
+#import geopandas
 
 
 # 3D Plot
@@ -21,9 +21,9 @@ def plot3Dtrajectory(name, desc, x, y, z):
     plt.savefig("Export/" + name + "_" + desc + '.png')
 
 def plotGroundTrack(name, desc, lat, long, min, max):
-    countries = geopandas.read_file(geopandas.datasets.get_path("naturalearth_lowres"))
+    #countries = geopandas.read_file(geopandas.datasets.get_path("naturalearth_lowres"))
 
-    countries.plot(color = "grey")
+    #countries.plot(color = "grey")
     plt.scatter(long, lat, color = "purple")
 
     plt.grid()
@@ -46,4 +46,26 @@ def polarPlot(name, desc, az, el):
     plt.ylim(90,0)
     plt.title(name + " " + desc)
     
+    plt.savefig("Export/" + name + "_" + desc + '.png')
+
+def elevationPlot(name, desc, el):
+    time = []
+
+    if name == "Lageos1":
+        for i in range(0, 86401, 120):
+            time.append(i)
+    else:
+        for i in range(0, 86401, 300):
+            time.append(i)
+
+    fig = plt.figure(figsize=(6, 3))
+    #print(len(time), len(el))
+    ax = fig.add_subplot(111)
+    plt.scatter(time, el, color= "purple")
+    plt.ylim(0,90)
+    plt.xlim(0, 86400)
+    plt.grid()
+
+    plt.title(name + " " + desc)
+
     plt.savefig("Export/" + name + "_" + desc + '.png')

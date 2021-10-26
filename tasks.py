@@ -123,11 +123,13 @@ def task4(satellites):
 
         az = []
         el = []
+        elT = []
 
         for (ni, ei, ui) in itertools.zip_longest(n, e, u):
             elevation = 0
             azimuth = 0
             if ui < 0: # below horizon
+                elT.append(-90) #hide it from skyplot for time plot
                 continue 
             if ei < 0 and ni > 0: #1st quadrant
                 azimuth = (-math.atan(ei / ni) * 180 / math.pi)
@@ -140,5 +142,7 @@ def task4(satellites):
 
             el.append(elevation)
             az.append(azimuth * math.pi / 180) #Need it in Rad
+            elT.append(elevation)
              
         plotter.polarPlot(satellite, "Topozentrisch 24h von Wetzell", az, el)
+        plotter.elevationPlot(satellite, "Elevation pro 24h von Wettzell", elT)

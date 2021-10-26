@@ -48,7 +48,7 @@ def polarPlot(name, desc, az, el):
     
     plt.savefig("Export/" + name + "_" + desc + '.png')
 
-def elevationPlot(name, desc, el):
+def elevationPlot(name, desc, el, timeoverHorizon):
     time = []
 
     if name == "Lageos1":
@@ -58,8 +58,8 @@ def elevationPlot(name, desc, el):
         for i in range(0, 86401, 300):
             time.append(i)
 
-    fig = plt.figure(figsize=(6, 3))
-    #print(len(time), len(el))
+    fig = plt.figure(figsize=(8, 6))
+    
     ax = fig.add_subplot(111)
     plt.scatter(time, el, color= "purple")
     plt.ylim(0,90)
@@ -67,5 +67,6 @@ def elevationPlot(name, desc, el):
     plt.grid()
 
     plt.title(name + " " + desc)
+    plt.figtext(0.5, 0.03, "Sichtbare Zeit: " + str(timeoverHorizon) + "s (" + str(timeoverHorizon / 3600) + "h)", ha = "center", fontsize = 9)
 
     plt.savefig("Export/" + name + "_" + desc + '.png')

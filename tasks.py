@@ -124,6 +124,7 @@ def task4(satellites):
         az = []
         el = []
         elT = []
+        timeOverHorizon = 0
 
         for (ni, ei, ui) in itertools.zip_longest(n, e, u):
             elevation = 0
@@ -143,6 +144,11 @@ def task4(satellites):
             el.append(elevation)
             az.append(azimuth * math.pi / 180) #Need it in Rad
             elT.append(elevation)
-             
+        
+        for i in range(len(el)):
+            if el[i] > 0:
+                if satellite == "Lageos1": timeOverHorizon += 120
+                else: timeOverHorizon += 300
+
         plotter.polarPlot(satellite, "Topozentrisch 24h von Wetzell", az, el)
-        plotter.elevationPlot(satellite, "Elevation pro 24h von Wettzell", elT)
+        plotter.elevationPlot(satellite, "Elevation pro 24h von Wettzell", elT, timeOverHorizon)
